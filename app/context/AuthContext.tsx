@@ -1,31 +1,66 @@
 ﻿"use client";
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
-const AuthContext = createContext();
+type User = {
+  id: string;
+  email: string;
+  schoolEmail: string;
+  studentName: string;
+  studentEmail: string;
+  parentName?: string;
+  parentEmail?: string;
+  role: string;
+};
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+type AuthContextType = {
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (token: string, user: User) => void;
+  logout: () => void;
+};
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("authToken");
-    const storedUser = localStorage.getItem("user");
-    if (storedToken && storedUser) {
+    // Run only once on mount
+    let mounted = true;
+
+    const loadAuth = () => {
       try {
-        setToken(storedToken);
-        setUser(JSON.parse(storedUser));
-        setIsAuthenticated(true);
+        const storedToken = localStorage.getItem("authToken");
+        const storedUser = localStorage.getItem("user");
+        
+        if (mounted && storedToken && storedUser) {
+          setToken(storedToken);
+          setUser(JSON.parse(storedUser));
+          setIsAuthenticated(true);
+        }
       } catch {
         localStorage.removeItem("authToken");
         localStorage.removeItem("user");
+      } finally {
+        if (mounted) {
+          setIsLoading(false);
+        }
       }
-    }
-    setIsLoading(false);
+    };
+
+    loadAuth();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  const login = (newToken, newUser) => {
+  const login = (newToken: string, newUser: User) => {
     setToken(newToken);
     setUser(newUser);
     setIsAuthenticated(true);
@@ -50,6 +85,8 @@ export function AuthProvider({ children }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within an AuthProvider");
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
   return context;
 }
