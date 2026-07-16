@@ -1,23 +1,21 @@
 ﻿"use client";
 import { useState } from "react";
-import Link from "next/link";
 
 export default function ParentPage() {
   const [activeTab, setActiveTab] = useState("reports");
 
-  // Same reports as student - consistent with Thabo Mokoena
   const reports = [
-    { id: 1, title: "Mathematics - Term 1 2026", term: "Term 1", grade: "78%", date: "2026-03-15", subject: "Mathematics", comment: "Good progress, keep practicing algebra." },
-    { id: 2, title: "English - Term 1 2026", term: "Term 1", grade: "82%", date: "2026-03-14", subject: "English", comment: "Excellent essay writing skills." },
-    { id: 3, title: "Natural Sciences - Term 1 2026", term: "Term 1", grade: "75%", date: "2026-03-12", subject: "Natural Sciences", comment: "Good understanding of scientific concepts." },
-    { id: 4, title: "Mathematics - Term 2 2026", term: "Term 2", grade: "84%", date: "2026-06-20", subject: "Mathematics", comment: "Great improvement in geometry." },
-    { id: 5, title: "English - Term 2 2026", term: "Term 2", grade: "86%", date: "2026-06-18", subject: "English", comment: "Excellent work in literature analysis." },
+    { id: 1, title: "Mathematics - Term 1 2026", term: "Term 1", grade: "78%", date: "2026-03-15", subject: "Mathematics" },
+    { id: 2, title: "English - Term 1 2026", term: "Term 1", grade: "82%", date: "2026-03-14", subject: "English" },
+    { id: 3, title: "Natural Sciences - Term 1 2026", term: "Term 1", grade: "75%", date: "2026-03-12", subject: "Natural Sciences" },
+    { id: 4, title: "Mathematics - Term 2 2026", term: "Term 2", grade: "84%", date: "2026-06-20", subject: "Mathematics" },
+    { id: 5, title: "English - Term 2 2026", term: "Term 2", grade: "86%", date: "2026-06-18", subject: "English" },
   ];
 
   const behavior = [
-    { id: 1, date: "2026-07-15", description: "Excellent participation in class discussions. Showed great understanding of complex algebraic concepts.", severity: "Positive", teacher: "Mr. Smith" },
-    { id: 2, date: "2026-07-10", description: "Arrived 10 minutes late to class. Disruption was minimal and the student apologized.", severity: "Minor", teacher: "Mrs. Johnson" },
-    { id: 3, date: "2026-07-05", description: "Helped a fellow student understand the lesson material. Demonstrated leadership and empathy.", severity: "Positive", teacher: "Mr. Smith" },
+    { id: 1, date: "2026-07-15", description: "Excellent participation in class discussions.", severity: "Positive", teacher: "Mr. Smith" },
+    { id: 2, date: "2026-07-10", description: "Arrived 10 minutes late to class.", severity: "Minor", teacher: "Mrs. Johnson" },
+    { id: 3, date: "2026-07-05", description: "Helped a fellow student understand the lesson.", severity: "Positive", teacher: "Mr. Smith" },
   ];
 
   const subjects = [
@@ -27,7 +25,7 @@ export default function ParentPage() {
     { name: "History", grade: "71%", teacher: "Mr. Davis", status: "Needs Focus" },
   ];
 
-  const getGradeColor = (grade) => {
+  const getGradeColor = (grade: string) => {
     const num = parseInt(grade);
     if (num >= 80) return "text-green-600";
     if (num >= 70) return "text-blue-600";
@@ -38,7 +36,6 @@ export default function ParentPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f0f4ff] to-[#e8edf5]">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
         <div className="bg-[#003057] text-white rounded-2xl shadow-lg p-6 mb-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
             <div>
@@ -53,28 +50,26 @@ export default function ParentPage() {
           </div>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-[#003057]">{reports.length}</div><div className="text-sm text-gray-600">Report Cards</div></div>
           <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-[#ed8936]">{subjects.length}</div><div className="text-sm text-gray-600">Subjects</div></div>
-          <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-green-600">85%</div><div className="text-sm text-gray-600">Average Grade</div></div>
+          <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-green-600">85%</div><div className="text-sm text-gray-600">Average</div></div>
           <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-[#C41230]">{behavior.filter(b => b.severity === "Positive").length}</div><div className="text-sm text-gray-600">Positive Reports</div></div>
         </div>
 
-        {/* Tabs */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="border-b border-gray-200 p-4">
             <div className="flex flex-wrap gap-2">
               <button onClick={() => setActiveTab("reports")} className={`px-6 py-3 rounded-lg font-medium transition ${activeTab === "reports" ? "bg-[#003057] text-white" : "text-gray-600 hover:bg-gray-100"}`}>📄 Report Cards</button>
               <button onClick={() => setActiveTab("behavior")} className={`px-6 py-3 rounded-lg font-medium transition ${activeTab === "behavior" ? "bg-[#003057] text-white" : "text-gray-600 hover:bg-gray-100"}`}>📝 Behavior</button>
-              <button onClick={() => setActiveTab("subjects")} className={`px-6 py-3 rounded-lg font-medium transition ${activeTab === "subjects" ? "bg-[#003057] text-white" : "text-gray-600 hover:bg-gray-100"}`}>📚 Subject Performance</button>
+              <button onClick={() => setActiveTab("subjects")} className={`px-6 py-3 rounded-lg font-medium transition ${activeTab === "subjects" ? "bg-[#003057] text-white" : "text-gray-600 hover:bg-gray-100"}`}>📚 Subjects</button>
             </div>
           </div>
 
           <div className="p-6">
             {activeTab === "reports" && (
               <div>
-                <h2 className="text-xl font-semibold text-[#003057] mb-4">Your Child's Report Cards</h2>
+                <h2 className="text-xl font-semibold text-[#003057] mb-4">Your Child&apos;s Report Cards</h2>
                 {reports.map((r) => (
                   <div key={r.id} className="border rounded-xl p-4 mb-3 hover:shadow-md transition bg-white">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

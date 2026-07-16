@@ -1,11 +1,9 @@
 ﻿"use client";
 import { useState } from "react";
-import Link from "next/link";
 
 export default function StudentPage() {
   const [activeTab, setActiveTab] = useState("reports");
 
-  // Real report cards - consistent student: Thabo Mokoena
   const reports = [
     { id: 1, title: "Mathematics - Term 1 2026", term: "Term 1", grade: "78%", date: "2026-03-15", subject: "Mathematics", comment: "Good progress, keep practicing algebra." },
     { id: 2, title: "English - Term 1 2026", term: "Term 1", grade: "82%", date: "2026-03-14", subject: "English", comment: "Excellent essay writing skills." },
@@ -28,7 +26,6 @@ export default function StudentPage() {
     { id: 1, date: "2026-07-15", description: "Excellent participation in class discussions. Showed great understanding of complex algebraic concepts.", severity: "Positive", teacher: "Mr. Smith" },
     { id: 2, date: "2026-07-10", description: "Arrived 10 minutes late to class. Disruption was minimal and the student apologized.", severity: "Minor", teacher: "Mrs. Johnson" },
     { id: 3, date: "2026-07-05", description: "Helped a fellow student understand the lesson material. Demonstrated leadership and empathy.", severity: "Positive", teacher: "Mr. Smith" },
-    { id: 4, date: "2026-06-28", description: "Outstanding performance in the group project. Took initiative and helped other team members.", severity: "Positive", teacher: "Ms. Brown" },
   ];
 
   const tabs = [
@@ -37,7 +34,7 @@ export default function StudentPage() {
     { id: "behavior", label: "📝 Behavior", count: behavior.length },
   ];
 
-  const getGradeColor = (grade) => {
+  const getGradeColor = (grade: string) => {
     const num = parseInt(grade);
     if (num >= 80) return "text-green-600";
     if (num >= 70) return "text-blue-600";
@@ -66,7 +63,7 @@ export default function StudentPage() {
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-[#003057]">{reports.length}</div><div className="text-sm text-gray-600">Report Cards</div></div>
-          <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-[#ed8936]">{materials.length}</div><div className="text-sm text-gray-600">Learning Materials</div></div>
+          <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-[#ed8936]">{materials.length}</div><div className="text-sm text-gray-600">Materials</div></div>
           <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-green-600">8</div><div className="text-sm text-gray-600">Subjects</div></div>
           <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-[#C41230]">{behavior.filter(b => b.severity === "Positive").length}</div><div className="text-sm text-gray-600">Positive Reports</div></div>
         </div>
@@ -76,7 +73,11 @@ export default function StudentPage() {
           <div className="border-b border-gray-200 p-4">
             <div className="flex flex-wrap gap-2">
               {tabs.map((tab) => (
-                <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`px-6 py-3 rounded-lg font-medium transition ${activeTab === tab.id ? "bg-[#003057] text-white shadow-md" : "text-gray-600 hover:bg-gray-100"}`}>
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-6 py-3 rounded-lg font-medium transition ${activeTab === tab.id ? "bg-[#003057] text-white shadow-md" : "text-gray-600 hover:bg-gray-100"}`}
+                >
                   {tab.label} <span className="text-sm opacity-75">({tab.count})</span>
                 </button>
               ))}
@@ -84,7 +85,7 @@ export default function StudentPage() {
           </div>
 
           <div className="p-6">
-            {/* Reports Tab - Real Report Cards */}
+            {/* Reports Tab */}
             {activeTab === "reports" && (
               <div>
                 <h2 className="text-xl font-semibold text-[#003057] mb-4">Academic Report Cards</h2>
@@ -95,7 +96,7 @@ export default function StudentPage() {
                         <div className="flex-1">
                           <div className="font-semibold text-gray-800">{r.title}</div>
                           <div className="text-sm text-gray-500">{r.subject} • {r.date}</div>
-                          <div className="text-sm text-gray-600 mt-1 italic">"{r.comment}"</div>
+                          <div className="text-sm text-gray-600 mt-1 italic">&quot;{r.comment}&quot;</div>
                         </div>
                         <div className="flex items-center gap-4">
                           <span className={`text-2xl font-bold ${getGradeColor(r.grade)}`}>{r.grade}</span>

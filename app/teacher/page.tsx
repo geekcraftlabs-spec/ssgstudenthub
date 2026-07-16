@@ -1,10 +1,8 @@
 ﻿"use client";
 import { useState } from "react";
-import Link from "next/link";
 
 export default function TeacherPage() {
   const [selectedGrade, setSelectedGrade] = useState("");
-  const [selectedStudent, setSelectedStudent] = useState("");
   const [activeTab, setActiveTab] = useState("students");
 
   const grades = ["Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12"];
@@ -27,7 +25,6 @@ export default function TeacherPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f0f4ff] to-[#e8edf5]">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
         <div className="bg-[#003057] text-white rounded-2xl shadow-lg p-6 mb-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
             <div>
@@ -42,7 +39,6 @@ export default function TeacherPage() {
           </div>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-[#003057]">{students.length}</div><div className="text-sm text-gray-600">Total Students</div></div>
           <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-[#ed8936]">{grades.length}</div><div className="text-sm text-gray-600">Grades</div></div>
@@ -50,7 +46,6 @@ export default function TeacherPage() {
           <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-[#C41230]">12</div><div className="text-sm text-gray-600">Materials Uploaded</div></div>
         </div>
 
-        {/* Main Content */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="border-b border-gray-200 p-4">
             <div className="flex flex-wrap gap-2">
@@ -65,8 +60,13 @@ export default function TeacherPage() {
             {activeTab === "students" && (
               <div>
                 <h2 className="text-xl font-semibold text-[#003057] mb-4">Student Management</h2>
-                <div className="mb-4"><label className="block text-sm font-medium mb-2">Filter by Grade</label>
-                  <select value={selectedGrade} onChange={(e) => setSelectedGrade(e.target.value)} className="w-full md:w-64 p-3 border rounded-lg">
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-2">Filter by Grade</label>
+                  <select
+                    value={selectedGrade}
+                    onChange={(e) => setSelectedGrade(e.target.value)}
+                    className="w-full md:w-64 p-3 border rounded-lg focus:ring-2 focus:ring-[#003057] outline-none"
+                  >
                     <option value="">All Grades</option>
                     {grades.map(g => <option key={g} value={g}>{g}</option>)}
                   </select>
@@ -74,8 +74,14 @@ export default function TeacherPage() {
                 <div className="space-y-2">
                   {filteredStudents.map((s) => (
                     <div key={s.id} className="flex items-center justify-between p-4 border rounded-xl hover:shadow-md transition bg-white">
-                      <div><div className="font-semibold">{s.name}</div><div className="text-sm text-gray-500">{s.email}</div></div>
-                      <div className="flex items-center gap-4"><span className="text-sm text-gray-500">{s.grade}</span><button className="text-[#003057] hover:text-[#C41230] transition text-sm font-medium">View Profile →</button></div>
+                      <div>
+                        <div className="font-semibold">{s.name}</div>
+                        <div className="text-sm text-gray-500">{s.email}</div>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <span className="text-sm text-gray-500">{s.grade}</span>
+                        <button className="text-[#003057] hover:text-[#C41230] transition text-sm font-medium">View →</button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -89,9 +95,9 @@ export default function TeacherPage() {
                   <div className="p-6 border-2 border-dashed rounded-xl">
                     <h3 className="font-semibold mb-4 text-[#003057]">📚 Grade-wide Material</h3>
                     <div className="space-y-3">
-                      <select className="w-full p-3 border rounded-lg"><option>Select Grade</option>{grades.map(g => <option key={g}>{g}</option>)}</select>
-                      <select className="w-full p-3 border rounded-lg"><option>Select Subject</option><option>Mathematics</option><option>English</option><option>Natural Sciences</option><option>History</option></select>
-                      <input type="text" placeholder="Title" className="w-full p-3 border rounded-lg" />
+                      <select className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#003057] outline-none"><option>Select Grade</option>{grades.map(g => <option key={g}>{g}</option>)}</select>
+                      <select className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#003057] outline-none"><option>Select Subject</option><option>Mathematics</option><option>English</option><option>Natural Sciences</option><option>History</option></select>
+                      <input type="text" placeholder="Title" className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#003057] outline-none" />
                       <input type="file" accept=".pdf" className="w-full p-2 border rounded-lg" />
                       <button className="w-full bg-[#003057] text-white py-3 rounded-lg hover:bg-[#C41230] transition font-semibold">Upload to Grade</button>
                     </div>
@@ -99,9 +105,9 @@ export default function TeacherPage() {
                   <div className="p-6 border-2 border-dashed rounded-xl">
                     <h3 className="font-semibold mb-4 text-[#003057]">👤 Individual Student</h3>
                     <div className="space-y-3">
-                      <select className="w-full p-3 border rounded-lg"><option>Select Student</option>{students.map(s => <option key={s.id}>{s.name}</option>)}</select>
-                      <select className="w-full p-3 border rounded-lg"><option>Select Subject</option><option>Mathematics</option><option>English</option><option>Natural Sciences</option><option>History</option></select>
-                      <input type="text" placeholder="Title" className="w-full p-3 border rounded-lg" />
+                      <select className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#003057] outline-none"><option>Select Student</option>{students.map(s => <option key={s.id}>{s.name}</option>)}</select>
+                      <select className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#003057] outline-none"><option>Select Subject</option><option>Mathematics</option><option>English</option><option>Natural Sciences</option><option>History</option></select>
+                      <input type="text" placeholder="Title" className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#003057] outline-none" />
                       <input type="file" accept=".pdf" className="w-full p-2 border rounded-lg" />
                       <button className="w-full bg-[#ed8936] text-white py-3 rounded-lg hover:bg-[#d4792e] transition font-semibold">Upload for Student</button>
                     </div>
@@ -118,8 +124,8 @@ export default function TeacherPage() {
                   <h3 className="font-semibold mb-2 text-[#003057]">Drag & drop report cards here</h3>
                   <p className="text-sm text-gray-500 mb-4">or click to browse PDF files</p>
                   <div className="flex flex-wrap gap-4 justify-center">
-                    <select className="p-3 border rounded-lg"><option>Select Student</option>{students.map(s => <option key={s.id}>{s.name}</option>)}</select>
-                    <select className="p-3 border rounded-lg"><option>Select Term</option><option>Term 1</option><option>Term 2</option><option>Term 3</option></select>
+                    <select className="p-3 border rounded-lg focus:ring-2 focus:ring-[#003057] outline-none"><option>Select Student</option>{students.map(s => <option key={s.id}>{s.name}</option>)}</select>
+                    <select className="p-3 border rounded-lg focus:ring-2 focus:ring-[#003057] outline-none"><option>Select Term</option><option>Term 1</option><option>Term 2</option><option>Term 3</option></select>
                     <input type="file" accept=".pdf" className="p-2 border rounded-lg" />
                     <button className="bg-[#003057] text-white px-6 py-3 rounded-lg hover:bg-[#C41230] transition font-semibold">Upload Report</button>
                   </div>
@@ -141,9 +147,13 @@ export default function TeacherPage() {
               <div>
                 <h2 className="text-xl font-semibold text-[#003057] mb-4">Add Behavior Report</h2>
                 <div className="space-y-4">
-                  <select className="w-full p-3 border rounded-lg"><option>Select Student</option>{students.map(s => <option key={s.id}>{s.name}</option>)}</select>
-                  <select className="w-full p-3 border rounded-lg"><option>Severity</option><option>Positive</option><option>Minor</option><option>Major</option></select>
-                  <textarea className="w-full p-3 border rounded-lg" rows="4" placeholder="Describe the behavior in detail..."></textarea>
+                  <select className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#003057] outline-none"><option>Select Student</option>{students.map(s => <option key={s.id}>{s.name}</option>)}</select>
+                  <select className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#003057] outline-none"><option>Severity</option><option>Positive</option><option>Minor</option><option>Major</option></select>
+                  <textarea 
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#003057] outline-none" 
+                    rows={4} 
+                    placeholder="Describe the behavior in detail..."
+                  />
                   <button className="bg-[#003057] text-white px-8 py-3 rounded-lg hover:bg-[#C41230] transition font-semibold">Save Behavior Report</button>
                 </div>
               </div>
