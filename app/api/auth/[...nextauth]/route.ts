@@ -2,6 +2,8 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import type { JWT } from "next-auth/jwt";
+import type { Session } from "next-auth";
+import type { User as NextAuthUser } from "next-auth";
 
 // Temporary users for testing
 const users = [
@@ -50,6 +52,17 @@ declare module "next-auth/jwt" {
   }
 }
 
+// Define types for callback parameters
+type JwtCallbackParams = {
+  token: JWT;
+  user: NextAuthUser;
+};
+
+type SessionCallbackParams = {
+  session: Session;
+  token: JWT;
+};
+
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -82,8 +95,7 @@ export const authOptions = {
     strategy: "jwt" as const 
   },
   callbacks: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async jwt({ token, user }: { token: JWT; user: any }) {
+    async jwt({ token, user }: JwtCallbackParams) {
       if (user) {
         token.sub = user.id;
         token.role = user.role;
@@ -93,8 +105,7 @@ export const authOptions = {
       }
       return token;
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async session({ session, token }: { session: any; token: JWT }) {
+    async session({ session, token }: SessionCallbackParams) {
       if (session.user) {
         session.user.id = token.sub as string;
         session.user.email = token.email as string;
@@ -110,6 +121,6 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-export const { handlers, signIn, signOut } = NextAuth(authOptions);
-export const GET = handlers.GET;
-export const POST = handlers.POST;
+const handler = NextAuth(authOptions);
+export const GET = handler;
+export const POST = handler;
