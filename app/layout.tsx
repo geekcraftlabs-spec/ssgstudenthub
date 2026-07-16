@@ -3,9 +3,14 @@ import "./globals.css";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import { AuthProvider } from "@/app/context/AuthContext";
+import { ReactNode } from "react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-playfair" });
+const playfair = Playfair_Display({ 
+  subsets: ["latin"], 
+  weight: ["400", "700"], 
+  variable: "--font-playfair" 
+});
 
 export const metadata = {
   title: "School Platform – Sandton School Group",
@@ -13,7 +18,7 @@ export const metadata = {
   icons: { icon: "/images/mainlogo.png" },
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} bg-[#F8F9FA] text-[#1A2A3A] antialiased font-sans`}>
